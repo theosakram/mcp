@@ -22,55 +22,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-var expense_entity_1 = require("./expense.entity");
+exports.Expense = void 0;
 var typeorm_1 = require("typeorm");
-var balance_entity_1 = require("./balance.entity");
-var income_entity_1 = require("./income.entity");
-var User = /** @class */ (function (_super) {
-    __extends(User, _super);
-    function User() {
+var user_entity_1 = require("./user.entity");
+var Expense = /** @class */ (function (_super) {
+    __extends(Expense, _super);
+    function Expense() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], User.prototype, "id", void 0);
+    ], Expense.prototype, "id", void 0);
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], User.prototype, "fullName", void 0);
+    ], Expense.prototype, "title", void 0);
     __decorate([
         typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "email", void 0);
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "password", void 0);
+        __metadata("design:type", Number)
+    ], Expense.prototype, "amount", void 0);
     __decorate([
         typeorm_1.CreateDateColumn(),
         __metadata("design:type", Date)
-    ], User.prototype, "createdAt", void 0);
+    ], Expense.prototype, "createdAt", void 0);
     __decorate([
-        typeorm_1.UpdateDateColumn(),
-        __metadata("design:type", Date)
-    ], User.prototype, "updatedAt", void 0);
-    __decorate([
-        typeorm_1.OneToOne(function () { return balance_entity_1.Balance; }, function (balance) { return balance.user; }),
-        __metadata("design:type", balance_entity_1.Balance)
-    ], User.prototype, "balance", void 0);
-    __decorate([
-        typeorm_1.OneToMany(function () { return income_entity_1.Income; }, function (income) { return income.user; }),
-        __metadata("design:type", Array)
-    ], User.prototype, "incomes", void 0);
-    __decorate([
-        typeorm_1.OneToMany(function () { return expense_entity_1.Expense; }, function (expense) { return expense.user; }),
-        __metadata("design:type", Array)
-    ], User.prototype, "expenses", void 0);
-    User = __decorate([
+        typeorm_1.ManyToOne(function () { return user_entity_1.User; }, function (user) { return user.expenses; }),
+        __metadata("design:type", user_entity_1.User)
+    ], Expense.prototype, "user", void 0);
+    Expense = __decorate([
         typeorm_1.Entity()
-    ], User);
-    return User;
+    ], Expense);
+    return Expense;
 }(typeorm_1.BaseEntity));
-exports.User = User;
+exports.Expense = Expense;
