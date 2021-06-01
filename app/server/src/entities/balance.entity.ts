@@ -1,27 +1,22 @@
 import {
 	Entity,
+	BaseEntity,
 	PrimaryGeneratedColumn,
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
-	BaseEntity,
 	OneToOne,
+	JoinColumn,
 } from "typeorm";
-import { Balance } from "./balance.entity";
+import { User } from "./user.entity";
 
 @Entity()
-export class User extends BaseEntity {
+export class Balance extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
 	@Column()
-	fullName: string;
-
-	@Column()
-	email: string;
-
-	@Column()
-	password: string;
+	amount: number;
 
 	@CreateDateColumn()
 	createdAt: Date;
@@ -29,6 +24,7 @@ export class User extends BaseEntity {
 	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@OneToOne(() => Balance, (balance) => balance.user)
-	balance: Balance;
+	@OneToOne(() => User, (user) => user.id)
+	@JoinColumn()
+	user: User;
 }

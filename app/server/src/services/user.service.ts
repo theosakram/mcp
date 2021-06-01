@@ -1,5 +1,5 @@
+import { Balance, User } from "../entities";
 import { Request, Response, NextFunction } from "express";
-import { User } from "../entities";
 import { passwordHandler, tokenHandler } from "../utils/helpers";
 
 export class UserService {
@@ -13,7 +13,12 @@ export class UserService {
 				password: passwordHandler.hashPassword(password),
 			}).save();
 
-			res.status(201).json(user);
+			const balance = await Balance.create({
+				amount: 0,
+				user,
+			}).save();
+
+			res.status(201).json({ user, balance });
 		} catch (error) {
 			console.log(error);
 		}

@@ -9,5 +9,5 @@ exports.dbConfig = {
     password: "pgpw",
     logging: true,
     synchronize: true,
-    entities: [entities_1.User],
+    entities: [entities_1.Balance, entities_1.User],
 };
