@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { User } from "../entities";
+import { passwordHandler, tokenHandler } from "../utils/helpers";
 
 export class UserService {
 	static async register(req: Request, res: Response, next: NextFunction) {
@@ -9,7 +10,7 @@ export class UserService {
 			const user = await User.create({
 				fullName: `User ${email}`,
 				email,
-				password,
+				password: passwordHandler.hashPassword(password),
 			}).save();
 
 			res.status(201).json(user);
@@ -28,7 +29,20 @@ export class UserService {
 				},
 			});
 
-			res.status(200).json(user);
+			if (user) {
+				if (passwordHandler.comparePassword(password, user.password)) {
+					const access_token = tokenHandler.createToken({
+						id: user.id,
+						email: user.email,
+					});
+					res.status(200).json({
+						msg: "User logged in successfully",
+						access_token,
+						name: user.fullName,
+						id: user.id,
+					});
+				} else throw { status: 400, msg: "Wrong email/ password" };
+			} else throw { status: 400, msg: "User not found" };
 		} catch (error) {
 			console.log(error);
 		}

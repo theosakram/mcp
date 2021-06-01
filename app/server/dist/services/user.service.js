@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 var entities_1 = require("../entities");
+var helpers_1 = require("../utils/helpers");
 var UserService = /** @class */ (function () {
     function UserService() {
     }
@@ -54,7 +55,7 @@ var UserService = /** @class */ (function () {
                         return [4 /*yield*/, entities_1.User.create({
                                 fullName: "User " + email,
                                 email: email,
-                                password: password,
+                                password: helpers_1.passwordHandler.hashPassword(password),
                             }).save()];
                     case 2:
                         user = _b.sent();
@@ -71,7 +72,7 @@ var UserService = /** @class */ (function () {
     };
     UserService.login = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, password, user, error_2;
+            var _a, email, password, user, access_token, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -86,7 +87,24 @@ var UserService = /** @class */ (function () {
                             })];
                     case 2:
                         user = _b.sent();
-                        res.status(200).json(user);
+                        if (user) {
+                            if (helpers_1.passwordHandler.comparePassword(password, user.password)) {
+                                access_token = helpers_1.tokenHandler.createToken({
+                                    id: user.id,
+                                    email: user.email,
+                                });
+                                res.status(200).json({
+                                    msg: "User logged in successfully",
+                                    access_token: access_token,
+                                    name: user.fullName,
+                                    id: user.id,
+                                });
+                            }
+                            else
+                                throw { status: 400, msg: "Wrong email/ password" };
+                        }
+                        else
+                            throw { status: 400, msg: "User not found" };
                         return [3 /*break*/, 4];
                     case 3:
                         error_2 = _b.sent();
