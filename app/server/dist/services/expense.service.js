@@ -36,105 +36,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BalanceService = void 0;
-var entities_1 = require("../entities");
+exports.ExpenseService = void 0;
 var typeorm_1 = require("typeorm");
-var BalanceService = /** @class */ (function () {
-    function BalanceService() {
+var entities_1 = require("../entities");
+var ExpenseService = /** @class */ (function () {
+    function ExpenseService() {
     }
-    BalanceService.createBalance = function (req, res, next) {
+    ExpenseService.getAllExpensesByUserId = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var amount, userId, user, balance, error_1;
+            var userId, allExpenses, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        amount = req.body.amount;
                         userId = req.params.userId;
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 4, , 5]);
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, typeorm_1.getRepository(entities_1.Expense)
+                                .createQueryBuilder("expense")
+                                .where("expense.userId = :userId", { userId: userId })
+                                .getMany()];
+                    case 2:
+                        allExpenses = _a.sent();
+                        res.status(200).json(allExpenses);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ExpenseService.createExpense = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userId, _a, title, amount, user, newExpenses, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        userId = req.params.userId;
+                        _a = req.body, title = _a.title, amount = _a.amount;
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 4, , 5]);
                         return [4 /*yield*/, entities_1.User.findOne({
                                 where: {
                                     id: userId,
                                 },
                             })];
                     case 2:
-                        user = _a.sent();
-                        return [4 /*yield*/, entities_1.Balance.create({
+                        user = _b.sent();
+                        return [4 /*yield*/, entities_1.Expense.create({
                                 amount: amount,
+                                title: title,
                                 user: user,
                             }).save()];
                     case 3:
-                        balance = _a.sent();
-                        res.status(201).json(balance);
+                        newExpenses = _b.sent();
+                        res.status(201).json(newExpenses);
                         return [3 /*break*/, 5];
                     case 4:
-                        error_1 = _a.sent();
-                        console.log(error_1);
+                        error_2 = _b.sent();
+                        console.log(error_2);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
             });
         });
     };
-    BalanceService.getBalanceByUserId = function (req, res, next) {
-        return __awaiter(this, void 0, void 0, function () {
-            var userId, balance, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        userId = req.params.userId;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, typeorm_1.getRepository(entities_1.Balance)
-                                .createQueryBuilder("user")
-                                .where("user.id = :userId", { userId: userId })
-                                .getOne()];
-                    case 2:
-                        balance = _a.sent();
-                        res.status(200).json(balance);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    BalanceService.updateBalance = function (req, res, next) {
-        return __awaiter(this, void 0, void 0, function () {
-            var amount, id, updatedBalance, error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        amount = req.body.amount;
-                        id = req.params.id;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, typeorm_1.createQueryBuilder()
-                                .update(entities_1.Balance)
-                                .set({
-                                amount: amount,
-                            })
-                                .where("id = :id", { id: id })
-                                .execute()];
-                    case 2:
-                        updatedBalance = _a.sent();
-                        res.status(200).json(updatedBalance);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_3 = _a.sent();
-                        console.log(error_3);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return BalanceService;
+    return ExpenseService;
 }());
-exports.BalanceService = BalanceService;
+exports.ExpenseService = ExpenseService;

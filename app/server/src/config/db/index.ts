@@ -1,5 +1,5 @@
-import { Balance, User } from "../../entities";
 import { createConnection } from "typeorm";
+import { Balance, Expense, Income, User } from "../../entities";
 
 export const dbConfig = {
 	type: "postgres",
@@ -8,5 +8,5 @@ export const dbConfig = {
 	password: "pgpw",
 	logging: true,
 	synchronize: true,
-	entities: [Balance, User],
+	entities: [Balance, Expense, Income, User],
 } as Parameters<typeof createConnection>[0];

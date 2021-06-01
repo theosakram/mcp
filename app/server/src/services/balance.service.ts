@@ -1,4 +1,4 @@
-import { Balance } from "../entities";
+import { Balance, User } from "../entities";
 import { getRepository, createQueryBuilder } from "typeorm";
 import { Request, Response, NextFunction } from "express";
 
@@ -8,9 +8,16 @@ export class BalanceService {
 		res: Response,
 		next: NextFunction
 	) {
-		const { amount, user } = req.body;
+		const { amount } = req.body;
+		const { userId } = req.params;
 
 		try {
+			const user = await User.findOne({
+				where: {
+					id: userId,
+				},
+			});
+
 			const balance = await Balance.create({
 				amount,
 				user,
@@ -27,7 +34,7 @@ export class BalanceService {
 		res: Response,
 		next: NextFunction
 	) {
-		const { userId } = req.body;
+		const { userId } = req.params;
 
 		try {
 			const balance = await getRepository(Balance)
@@ -46,7 +53,8 @@ export class BalanceService {
 		res: Response,
 		next: NextFunction
 	) {
-		const { id, amount } = req.body;
+		const { amount } = req.body;
+		const { id } = req.params;
 
 		try {
 			const updatedBalance = await createQueryBuilder()
