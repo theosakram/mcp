@@ -3,7 +3,8 @@ import { UserService } from "../services";
 
 const route = Router();
 
-route.use("/register", UserService.register);
-route.use("/login", UserService.login);
+route.get("/:id", UserService.getUserById);
+route.post("/register", UserService.register);
+route.post("/login", UserService.login);
 
 export default route;

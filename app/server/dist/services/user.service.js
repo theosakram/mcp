@@ -114,7 +114,43 @@ var UserService = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 3:
                         error_2 = _b.sent();
-                        console.log(error_2);
+                        res.status(error_2.status).json({ msg: error_2.msg });
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserService.getUserById = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, user, profile, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.id;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, entities_1.User.findOne({
+                                where: {
+                                    id: id,
+                                },
+                                relations: ["balance", "incomes", "expenses"],
+                            })];
+                    case 2:
+                        user = _a.sent();
+                        profile = {
+                            fullName: user.fullName,
+                            email: user.email,
+                            balance: user.balance.amount,
+                            incomes: user.incomes,
+                            expenses: user.expenses,
+                        };
+                        res.status(200).json(profile);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        res.status(error_3.status).json({ msg: error_3.msg });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }

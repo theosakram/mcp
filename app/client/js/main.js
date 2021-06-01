@@ -1,4 +1,4 @@
-export class El extends Array {
+class El extends Array {
 	ready(cb) {
 		const isReady = this.some((e) => {
 			return e.readyState !== null && e.readyState !== "loading";

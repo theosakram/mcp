@@ -1,0 +1,19 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#App {
+    background: rebeccapurple;
+    height: 100vh;
+}
+
+#name-container {
+    border: 1px solid black;
+    margin-bottom: 20px;
+}

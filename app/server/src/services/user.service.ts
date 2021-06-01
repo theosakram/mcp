@@ -49,7 +49,32 @@ export class UserService {
 				} else throw { status: 400, msg: "Wrong email/ password" };
 			} else throw { status: 400, msg: "User not found" };
 		} catch (error) {
-			console.log(error);
+			res.status(error.status).json({ msg: error.msg });
+		}
+	}
+
+	static async getUserById(req: Request, res: Response, next: NextFunction) {
+		const { id } = req.params;
+
+		try {
+			const user = await User.findOne({
+				where: {
+					id,
+				},
+				relations: ["balance", "incomes", "expenses"],
+			});
+
+			const profile = {
+				fullName: user.fullName,
+				email: user.email,
+				balance: user.balance.amount,
+				incomes: user.incomes,
+				expenses: user.expenses,
+			};
+
+			res.status(200).json(profile);
+		} catch (error) {
+			res.status(error.status).json({ msg: error.msg });
 		}
 	}
 }
