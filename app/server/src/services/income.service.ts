@@ -1,6 +1,6 @@
-import { getRepository } from "typeorm";
+import { createQueryBuilder, getRepository } from "typeorm";
 import { Request, Response, NextFunction } from "express";
-import { Income, User } from "../entities";
+import { Balance, Income, User } from "../entities";
 
 export class IncomeService {
 	static async getAllIncomesByUserId(
@@ -8,15 +8,15 @@ export class IncomeService {
 		res: Response,
 		next: NextFunction
 	) {
-		const { userId } = req.body;
+		const { userId } = req.params;
 
 		try {
-			const allIncomes = await getRepository(Income)
+			const allIncome = await getRepository(Income)
 				.createQueryBuilder("income")
 				.where("income.userId = :userId", { userId })
 				.getMany();
 
-			res.status(200).json(allIncomes);
+			res.status(200).json(allIncome);
 		} catch (error) {
 			console.log(error);
 		}
@@ -31,15 +31,29 @@ export class IncomeService {
 				where: {
 					id: userId,
 				},
+				relations: ["balance"],
 			});
 
-			const newExpenses = await Income.create({
+			const newIncome = await Income.create({
 				amount,
 				source,
 				user,
 			}).save();
 
-			res.status(201).json(newExpenses);
+			await createQueryBuilder(Balance)
+				.update({
+					amount: user.balance.amount + amount,
+				})
+				.where("id = :id", { id: user.balance.id })
+				.execute();
+
+			res.status(201).json({
+				title: newIncome.source,
+				amount: newIncome.amount,
+				user: newIncome.user.fullName,
+				createdAt: newIncome.createdAt,
+				balance: newIncome.user.balance.amount + amount,
+			});
 		} catch (error) {
 			console.log(error);
 		}

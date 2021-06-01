@@ -44,11 +44,11 @@ var IncomeService = /** @class */ (function () {
     }
     IncomeService.getAllIncomesByUserId = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, allIncomes, error_1;
+            var userId, allIncome, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        userId = req.body.userId;
+                        userId = req.params.userId;
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
@@ -57,8 +57,8 @@ var IncomeService = /** @class */ (function () {
                                 .where("income.userId = :userId", { userId: userId })
                                 .getMany()];
                     case 2:
-                        allIncomes = _a.sent();
-                        res.status(200).json(allIncomes);
+                        allIncome = _a.sent();
+                        res.status(200).json(allIncome);
                         return [3 /*break*/, 4];
                     case 3:
                         error_1 = _a.sent();
@@ -71,7 +71,7 @@ var IncomeService = /** @class */ (function () {
     };
     IncomeService.createIncome = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, source, amount, userId, user, newExpenses, error_2;
+            var _a, source, amount, userId, user, newIncome, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -79,11 +79,12 @@ var IncomeService = /** @class */ (function () {
                         userId = req.params.userId;
                         _b.label = 1;
                     case 1:
-                        _b.trys.push([1, 4, , 5]);
+                        _b.trys.push([1, 5, , 6]);
                         return [4 /*yield*/, entities_1.User.findOne({
                                 where: {
                                     id: userId,
                                 },
+                                relations: ["balance"],
                             })];
                     case 2:
                         user = _b.sent();
@@ -93,14 +94,28 @@ var IncomeService = /** @class */ (function () {
                                 user: user,
                             }).save()];
                     case 3:
-                        newExpenses = _b.sent();
-                        res.status(201).json(newExpenses);
-                        return [3 /*break*/, 5];
+                        newIncome = _b.sent();
+                        return [4 /*yield*/, typeorm_1.createQueryBuilder(entities_1.Balance)
+                                .update({
+                                amount: user.balance.amount + amount,
+                            })
+                                .where("id = :id", { id: user.balance.id })
+                                .execute()];
                     case 4:
+                        _b.sent();
+                        res.status(201).json({
+                            title: newIncome.source,
+                            amount: newIncome.amount,
+                            user: newIncome.user.fullName,
+                            createdAt: newIncome.createdAt,
+                            balance: newIncome.user.balance.amount + amount,
+                        });
+                        return [3 /*break*/, 6];
+                    case 5:
                         error_2 = _b.sent();
                         console.log(error_2);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

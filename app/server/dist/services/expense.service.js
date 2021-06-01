@@ -79,14 +79,16 @@ var ExpenseService = /** @class */ (function () {
                         _a = req.body, title = _a.title, amount = _a.amount;
                         _b.label = 1;
                     case 1:
-                        _b.trys.push([1, 4, , 5]);
+                        _b.trys.push([1, 7, , 8]);
                         return [4 /*yield*/, entities_1.User.findOne({
                                 where: {
                                     id: userId,
                                 },
+                                relations: ["balance"],
                             })];
                     case 2:
                         user = _b.sent();
+                        if (!(user.balance.amount > amount)) return [3 /*break*/, 5];
                         return [4 /*yield*/, entities_1.Expense.create({
                                 amount: amount,
                                 title: title,
@@ -94,13 +96,31 @@ var ExpenseService = /** @class */ (function () {
                             }).save()];
                     case 3:
                         newExpenses = _b.sent();
-                        res.status(201).json(newExpenses);
-                        return [3 /*break*/, 5];
+                        return [4 /*yield*/, typeorm_1.createQueryBuilder(entities_1.Balance)
+                                .update({
+                                amount: user.balance.amount - amount,
+                            })
+                                .where("id = :id", { id: user.balance.id })
+                                .execute()];
                     case 4:
+                        _b.sent();
+                        res.status(201).json({
+                            title: newExpenses.title,
+                            amount: newExpenses.amount,
+                            user: newExpenses.user.fullName,
+                            createdAt: newExpenses.createdAt,
+                            balance: newExpenses.user.balance.amount - amount,
+                        });
+                        return [3 /*break*/, 6];
+                    case 5:
+                        res.status(400).json({ msg: "Saldo tidak mencukupi" });
+                        _b.label = 6;
+                    case 6: return [3 /*break*/, 8];
+                    case 7:
                         error_2 = _b.sent();
                         console.log(error_2);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/];
                 }
             });
         });

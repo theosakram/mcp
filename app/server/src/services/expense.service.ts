@@ -1,6 +1,6 @@
-import { getRepository } from "typeorm";
+import { createQueryBuilder, getRepository } from "typeorm";
 import { Request, Response, NextFunction } from "express";
-import { Expense, User } from "../entities";
+import { Balance, Expense, User } from "../entities";
 
 export class ExpenseService {
 	static async getAllExpensesByUserId(
@@ -35,15 +35,31 @@ export class ExpenseService {
 				where: {
 					id: userId,
 				},
+				relations: ["balance"],
 			});
 
-			const newExpenses = await Expense.create({
-				amount,
-				title,
-				user,
-			}).save();
+			if (user.balance.amount > amount) {
+				const newExpenses = await Expense.create({
+					amount,
+					title,
+					user,
+				}).save();
 
-			res.status(201).json(newExpenses);
+				await createQueryBuilder(Balance)
+					.update({
+						amount: user.balance.amount - amount,
+					})
+					.where("id = :id", { id: user.balance.id })
+					.execute();
+
+				res.status(201).json({
+					title: newExpenses.title,
+					amount: newExpenses.amount,
+					user: newExpenses.user.fullName,
+					createdAt: newExpenses.createdAt,
+					balance: newExpenses.user.balance.amount - amount,
+				});
+			} else res.status(400).json({ msg: "Saldo tidak mencukupi" });
 		} catch (error) {
 			console.log(error);
 		}

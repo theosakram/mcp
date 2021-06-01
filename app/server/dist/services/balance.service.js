@@ -114,23 +114,29 @@ var BalanceService = /** @class */ (function () {
                         id = req.params.id;
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, typeorm_1.createQueryBuilder()
-                                .update(entities_1.Balance)
-                                .set({
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, typeorm_1.createQueryBuilder(entities_1.Balance)
+                                .update({
                                 amount: amount,
                             })
                                 .where("id = :id", { id: id })
                                 .execute()];
                     case 2:
+                        _a.sent();
+                        return [4 /*yield*/, entities_1.Balance.findOne({
+                                where: {
+                                    id: id,
+                                },
+                            })];
+                    case 3:
                         updatedBalance = _a.sent();
                         res.status(200).json(updatedBalance);
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 5];
+                    case 4:
                         error_3 = _a.sent();
                         console.log(error_3);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });

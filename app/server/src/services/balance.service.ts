@@ -57,13 +57,18 @@ export class BalanceService {
 		const { id } = req.params;
 
 		try {
-			const updatedBalance = await createQueryBuilder()
-				.update(Balance)
-				.set({
+			await createQueryBuilder(Balance)
+				.update({
 					amount,
 				})
 				.where("id = :id", { id })
 				.execute();
+
+			const updatedBalance = await Balance.findOne({
+				where: {
+					id,
+				},
+			});
 
 			res.status(200).json(updatedBalance);
 		} catch (error) {
