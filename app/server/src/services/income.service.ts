@@ -58,4 +58,24 @@ export class IncomeService {
 			console.log(error);
 		}
 	}
+
+	static async getLastIncomeOfUser(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
+		const { userId } = req.params;
+
+		try {
+			const lastIncome = await getRepository(Income)
+				.createQueryBuilder("income")
+				.where("income.userId = :userId", { userId })
+				.orderBy("income.createdAt", "DESC")
+				.getOne();
+
+			res.status(200).json(lastIncome);
+		} catch (error) {
+			res.status(400).json(error);
+		}
+	}
 }

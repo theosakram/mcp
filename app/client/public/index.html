@@ -14,24 +14,37 @@
 	</head>
 	<body>
 		<div id="App">
-			<div id="name-container">
-				<p>Anda login sebagai:</p>
-				<p id="name"></p>
-			</div>
+			<div id="container">
+				<section id="section-container">
+					<article id="name-container">
+						<p>Akun:</p>
+						<p id="name"></p>
+					</article>
 
-			<div id="balance-container">
-				<p>Saldo</p>
-				<p id="balance"></p>
-			</div>
+					<article id="balance-container">
+						<p>Saldo</p>
+						<p id="balance"></p>
+					</article>
+				</section>
 
-			<div>
-				<p>Daftar Pemasukan</p>
-				<ul id="income-list"></ul>
-			</div>
+				<section id="transactions">
+					<article id="income-container">
+						<p>Pemasukan Terakhir</p>
+						<p>Sumber: <span id="last-income-source"></span></p>
+						<p>Jumlah: <span id="last-income-amount"></span></p>
+					</article>
 
-			<div>
-				<p>Daftar Pengeluaran</p>
-				<ul id="expense-list"></ul>
+					<article id="expense-container">
+						<p>Pengeluaran Terakhir</p>
+						<p>Nama: <span id="last-expense-source"></span></p>
+						<p>Jumlah: <span id="last-expense-amount"></span></p>
+					</article>
+				</section>
+
+				<section id="buttons">
+					<button>Pemasukan</button>
+					<button>Pengeluaran</button>
+				</section>
 			</div>
 		</div>
 

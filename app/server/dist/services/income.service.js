@@ -120,6 +120,34 @@ var IncomeService = /** @class */ (function () {
             });
         });
     };
+    IncomeService.getLastIncomeOfUser = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userId, lastIncome, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.params.userId;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, typeorm_1.getRepository(entities_1.Income)
+                                .createQueryBuilder("income")
+                                .where("income.userId = :userId", { userId: userId })
+                                .orderBy("income.createdAt", "DESC")
+                                .getOne()];
+                    case 2:
+                        lastIncome = _a.sent();
+                        res.status(200).json(lastIncome);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        res.status(400).json(error_3);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return IncomeService;
 }());
 exports.IncomeService = IncomeService;

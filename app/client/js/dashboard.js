@@ -1,33 +1,60 @@
 const baseUrl = "http://localhost:4000";
+const baseLocation = document.location.href;
+
+const onChangePage = () => {
+	const indexedBaseLocation = baseLocation.split("/");
+	indexedBaseLocation.pop();
+
+	const finalLocation = indexedBaseLocation.join("/") + `/profile.html`;
+
+	document.location.replace(finalLocation);
+};
+
+Node.prototype.chainableAppendChild = function (newChild) {
+	this.appendChild(newChild);
+	return this;
+};
 
 d.get({
 	url: baseUrl + "/user/8",
 	success: (data) => {
 		const nameEl = d("#name")[0];
 		const balanceEl = d("#balance")[0];
-		const expenseEl = d("#expense-list")[0];
-		const incomeEl = d("#income-list")[0];
 
-		const { fullName, balance, incomes, expenses } = data;
+		const { fullName, balance } = data;
 
 		nameEl.innerHTML = fullName;
-		balanceEl.innerHTML = balance;
+		balanceEl.innerHTML = `Rp ${balance.toLocaleString("id-ID")}`;
+	},
+	err: (error) => console.log(error),
+	done: () => console.log("Done"),
+});
 
-		incomes.forEach((income) => {
-			const node = document.createElement("li");
-			const texNode = document.createTextNode(JSON.stringify(income));
+d.get({
+	url: baseUrl + "/income/last/8",
+	success: (data) => {
+		const sourceEl = d("#last-income-source")[0];
+		const amountEl = d("#last-income-amount")[0];
 
-			node.appendChild(texNode);
-			incomeEl.appendChild(node);
-		});
+		const { source, amount } = data;
 
-		expenses.forEach((expense) => {
-			const node = document.createElement("li");
-			const texNode = document.createTextNode(JSON.stringify(expense));
+		sourceEl.innerHTML = source;
+		amountEl.innerHTML = `Rp ${amount.toLocaleString("id-ID")}`;
+	},
+	err: (error) => console.log(error),
+	done: () => console.log("Done"),
+});
 
-			node.appendChild(texNode);
-			expenseEl.appendChild(node);
-		});
+d.get({
+	url: baseUrl + "/expense/last/8",
+	success: (data) => {
+		const expenseEl = d("#last-expense-source")[0];
+		const amountEl = d("#last-expense-amount")[0];
+
+		const { title, amount } = data;
+
+		expenseEl.innerHTML = title;
+		amountEl.innerHTML = `Rp ${amount.toLocaleString("id-ID")}`;
 	},
 	err: (error) => console.log(error),
 	done: () => console.log("Done"),

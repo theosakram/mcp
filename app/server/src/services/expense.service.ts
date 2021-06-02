@@ -64,4 +64,24 @@ export class ExpenseService {
 			console.log(error);
 		}
 	}
+
+	static async getLastExpenseOfUser(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
+		const { userId } = req.params;
+
+		try {
+			const lastExpense = await getRepository(Expense)
+				.createQueryBuilder("expense")
+				.where("expense.userId = :userId", { userId })
+				.orderBy("expense.createdAt", "DESC")
+				.getOne();
+
+			res.status(200).json(lastExpense);
+		} catch (error) {
+			res.status(400).json(error);
+		}
+	}
 }

@@ -9,11 +9,39 @@ body {
 }
 
 #App {
-    background: rebeccapurple;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6f8fc;
 }
 
-#name-container {
-    border: 1px solid black;
+#container {
+    width: 40%;
+    height: 60vh;
+}
+
+#section-container, #transactions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#name-container, #balance-container, #income-container, #expense-container  {
+    border-radius: 4px;
     margin-bottom: 20px;
+    height: 75px;
+    width: 49%;
+    background: white;
+    color: black;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 11%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+#name, #balance {
+    color: #de1b51;
+    font-size: 24px;
 }
