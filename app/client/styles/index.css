@@ -30,7 +30,7 @@ body {
 #name-container, #balance-container, #income-container, #expense-container  {
     border-radius: 4px;
     margin-bottom: 20px;
-    height: 75px;
+    height: 100px;
     width: 49%;
     background: white;
     color: black;
@@ -44,4 +44,40 @@ body {
 #name, #balance {
     color: #de1b51;
     font-size: 24px;
+}
+
+.income, .expense {
+    margin-left: 30px;
+    font-size: 14px;
+}
+
+.income > span, .expense > span {
+    color: #de1b51;
+}
+
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+}
+
+.btn {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+    background: #de1b51;
+    color: white;
+    transition: ease-in-out .1s;
+    height: 30px;
+    border: 1px solid #de1b51
+}
+
+.btn:hover {
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 11%);
+}
+
+.btn:active, .btn:focus {
+    background: white;
+    color: #de1b51;
 }

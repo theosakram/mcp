@@ -65,3 +65,8 @@ d.get = async function ({
 		done();
 	}
 };
+
+Node.prototype.chainableAppendChild = function (newChild) {
+	this.appendChild(newChild);
+	return this;
+};
