@@ -1,3 +1,6 @@
+const baseUrl = "http://localhost:4000";
+const baseLocation = document.location.href;
+
 class El extends Array {
 	ready(cb) {
 		const isReady = this.some((e) => {
@@ -40,12 +43,12 @@ function d(params) {
 
 d.get = async function ({
 	url,
-	data = {},
+	query = {},
 	success = () => {},
 	err = () => {},
 	done = () => {},
 }) {
-	const queryString = Object.entries(data)
+	const queryString = Object.entries(query)
 		.map(([key, value]) => {
 			return `${key}=${value}`;
 		})
@@ -66,7 +69,49 @@ d.get = async function ({
 	}
 };
 
+d.post = async function ({
+	url,
+	data = {},
+	query = {},
+	success = () => {},
+	err = () => {},
+	done = () => {},
+}) {
+	const queryString = Object.entries(query)
+		.map(([key, value]) => {
+			return `${key}=${value}`;
+		})
+		.join("&");
+
+	try {
+		const res = await (
+			await fetch(`${url}?${queryString}`, {
+				method: "POST",
+				body: data,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+		).json();
+
+		success(res);
+	} catch (error) {
+		err(error);
+	} finally {
+		done();
+	}
+};
+
 Node.prototype.chainableAppendChild = function (newChild) {
 	this.appendChild(newChild);
 	return this;
+};
+
+const onChangePage = (to) => {
+	const indexedBaseLocation = baseLocation.split("/");
+	indexedBaseLocation.pop();
+
+	const finalLocation = indexedBaseLocation.join("/") + to;
+
+	document.location.replace(finalLocation);
 };

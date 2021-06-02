@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="../styles/index.css">
+		<link rel="stylesheet" href="../styles/index.css" />
 		<title>Document</title>
 	</head>
 	<body>
@@ -16,9 +16,26 @@
 							<a href="./index.html">
 								<button class="btn">Beranda</button>
 							</a>
+							<button class="btn" onclick="createIncome()">
+								Simulasi Tambah Pemasukan
+							</button>
 						</div>
 					</section>
-					<h1>Pemasukan</h1>
+				</section>
+
+				<h1>Pemasukan</h1>
+
+				<table id="income-table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Sumber</th>
+							<th>Jumlah</th>
+							<th>Tanggal Masuk</th>
+						</tr>
+					</thead>
+					<tbody id="income-body"></tbody>
+				</table>
 			</div>
 		</div>
 

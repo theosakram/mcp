@@ -1,15 +1,3 @@
-const baseUrl = "http://localhost:4000";
-const baseLocation = document.location.href;
-
-const onChangePage = () => {
-	const indexedBaseLocation = baseLocation.split("/");
-	indexedBaseLocation.pop();
-
-	const finalLocation = indexedBaseLocation.join("/") + `/profile.html`;
-
-	document.location.replace(finalLocation);
-};
-
 // ini dummy untuk keperluan test. Pada app yang sebenarnya,
 // id bisa didapatkan dari login-token user.
 // Fitur login dan register sudah terimplement di backend
