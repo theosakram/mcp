@@ -12,7 +12,7 @@ yarn
 yarn dev
 ```
 
-_Agar server dapat di run, mohon pastikan POSTGRESQL sudah terinstall di komputer/laptop anda, kemudian silahkan buat database anda sendiri, dan ganti nama database di folder app/server/src/config/db/index.ts dengan database yang baru anda buat_
+_Agar server dapat di run, mohon pastikan POSTGRESQL sudah terinstall di komputer/laptop anda, kemudian silahkan buat database anda sendiri, dan ganti nama database di folder app/server/src/config/db/index.ts dengan database yang baru anda buat. Juga ganti username dan password sesuai username dan password di komputer/laptop anda_
 
 -   Running client
 
