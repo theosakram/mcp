@@ -15,3 +15,4 @@ const twoSums = (arr, target) => {
 
 console.log(twoSums([2, 7, 11, 15], 13));
 console.log(twoSums([3, 2, 4], 6));
+console.log(twoSums([3, 3], 6));
