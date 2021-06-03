@@ -8,6 +8,24 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px lightgray; 
+    border-radius: 10px;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: gray; 
+    border-radius: 10px;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: darkgray; 
+}
+
 #App {
     height: 100vh;
     display: flex;
@@ -27,7 +45,7 @@ body {
     align-items: center;
 }
 
-#name-container, #balance-container, #income-container, #expense-container  {
+#name-container, #balance-container, #income-container, #expense-container, #income-tablet > article  {
     border-radius: 4px;
     margin-bottom: 20px;
     height: 100px;
@@ -39,6 +57,11 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
+}
+
+#income-tablet, #expense-tablet {
+    display: none;
+    margin-top: 20px;
 }
 
 #name, #balance {
@@ -87,7 +110,7 @@ table  {
     margin-top: 20px;
     border: 1px solid #de1b51;
     border-radius: 4px;
-    padding: 10px
+    padding: 10px;
 }
 
 table > tbody > tr {
@@ -96,4 +119,55 @@ table > tbody > tr {
 
 table > tbody > tr > td  {
     text-align: center;
+}
+
+.table {
+    overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+
+    #App {
+        overflow-y: auto;
+    }
+
+    #container {
+        width: 60%;
+        height: 100vh;
+        padding: 20px;
+    }
+
+    #section-container, #transactions {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #name-container, #balance-container, #income-container, #expense-container, #income-tablet > article, #expense-tablet > article  {
+        border-radius: 4px;
+        margin-bottom: 20px;
+        height: 100px;
+        width: 90%;
+        background: white;
+        color: black;
+        box-shadow: 0 3px 6px 0 rgb(0 0 0 / 11%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+    }
+
+    #income-tablet, #expense-tablet {
+        display: block;
+        margin-top: 20px;
+    }
+
+    #income-table, #expense-table {
+        display: none;
+    }
+    
 }
